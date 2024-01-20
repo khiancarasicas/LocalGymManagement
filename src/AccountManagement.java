@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public class AccountManagement extends javax.swing.JFrame {
-    private String username, password;
+    public static int id;
     
     public Connection cn;
     public Statement st;
@@ -20,6 +20,26 @@ public class AccountManagement extends javax.swing.JFrame {
     public AccountManagement() {
         initComponents();
         ConnectToDatabase();
+    }
+    
+    public void setUserID(String username, String password) {
+        
+        try {
+            pst = cn.prepareStatement("SELECT * FROM users");
+            rs = pst.executeQuery();
+            
+            while(rs.next()) {
+                String name = rs.getString("username");
+                String pwd = rs.getString("password");
+                
+                if (username.equals(name) && password.equals(pwd)) {
+                    id = Integer.valueOf(rs.getString("id"));
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error saving ID.");
+        }
     }
     
     public void ConnectToDatabase() {
@@ -186,6 +206,7 @@ public class AccountManagement extends javax.swing.JFrame {
                     String sub = rs.getString("subscription");
                     
                     if(user.equals(name) && pass.equals(pwd)) {
+                        setUserID(name, pwd);
                         if(sub.equals("admin")) {
                             AdminPanel admin = new AdminPanel();
                             admin.pack();
@@ -196,11 +217,12 @@ public class AccountManagement extends javax.swing.JFrame {
                         }
                         dispose();
                         break;
-                    }else if (user.equals(name) && !pass.equals(pwd)) {
-                        JOptionPane.showMessageDialog(null, "The password you entered is incorrect.");
-                        break;
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Account not registered.");
+                    }else if(user.equals(name) && !pass.equals(pwd)) {
+                        if(!user.equals(name)) {
+                            JOptionPane.showMessageDialog(null, "Account not registered.");
+                        } else {
+                            JOptionPane.showMessageDialog(null, "The password you entered is incorrect.");
+                        }
                         break;
                     }
                 }
@@ -216,6 +238,7 @@ public class AccountManagement extends javax.swing.JFrame {
         String user = edttxt_username.getText();
         String pass = new String(edttxt_password.getPassword());
         String sub = "No subscription";
+        boolean userExist = false;
         
         if(!(user.isEmpty() || pass.isEmpty())){
             try {
@@ -227,27 +250,28 @@ public class AccountManagement extends javax.swing.JFrame {
                     String pwd = rs.getString("password");
                     
                     if(user.equals(name)) {
-                        JOptionPane.showMessageDialog(null, "Username already registered.");
-                        break;
-                    } else {
-                        try {
-                            pst = cn.prepareStatement("INSERT INTO users (username,password,subscription)VALUES(?,?,?)");
-                            pst.setString(1, user);
-                            pst.setString(2, pass);
-                            pst.setString(3, sub);
-                            
-                            int ex = pst.executeUpdate();
-                            if(ex == 1) {
-                                JOptionPane.showMessageDialog(null, "Account successfully registered.");
-                                dispose();
-                                break;
-                            } else {
-                                JOptionPane.showMessageDialog(null, "Account failed to register.");
-                                break;
-                            }
-                        } catch (SQLException ex) {
-                            Logger.getLogger(AccountManagement.class.getName()).log(Level.SEVERE, null, ex);
+                        userExist = true;
+                    }
+                }
+                
+                if(userExist) {
+                    JOptionPane.showMessageDialog(null, "Username already registered.");
+                } else {
+                    try {
+                        pst = cn.prepareStatement("INSERT INTO users (username,password,subscription)VALUES(?,?,?)");
+                        pst.setString(1, user);
+                        pst.setString(2, pass);
+                        pst.setString(3, sub);
+                        
+                        int ex = pst.executeUpdate();
+                        if(ex == 1) {
+                            JOptionPane.showMessageDialog(null, "Account successfully registered.");
+                            dispose();
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Account failed to register.");
                         }
+                    } catch (SQLException ex) {
+                        Logger.getLogger(AccountManagement.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             } catch (SQLException ex) {

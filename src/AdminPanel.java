@@ -11,8 +11,6 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-
-
 public class AdminPanel extends javax.swing.JFrame {
     public Connection cn;
     public Statement st;
@@ -25,6 +23,8 @@ public class AdminPanel extends javax.swing.JFrame {
         ConnectToDatabase();
         LoadUserData();
         LoadSubscription();
+        
+        jLabel1.setText("ADMIN : ID - " + AccountManagement.id);
     }
     
     public void ConnectToDatabase() {
@@ -109,6 +109,7 @@ public class AdminPanel extends javax.swing.JFrame {
                 Vector v = new Vector();
                 
                 for(int i = 1; i <= size; i++) {
+                    v.add(rs.getString("id"));
                     v.add(rs.getString("username"));
                     v.add(rs.getString("subscription"));
                 }
@@ -155,7 +156,6 @@ public class AdminPanel extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(700, 450));
         setResizable(false);
 
         jPanel1.setPreferredSize(new java.awt.Dimension(700, 450));
@@ -202,20 +202,20 @@ public class AdminPanel extends javax.swing.JFrame {
 
         table_all_users.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Username", "Subscription"
+                "ID", "Username", "Subscription"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false
+                false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -230,6 +230,7 @@ public class AdminPanel extends javax.swing.JFrame {
         if (table_all_users.getColumnModel().getColumnCount() > 0) {
             table_all_users.getColumnModel().getColumn(0).setResizable(false);
             table_all_users.getColumnModel().getColumn(1).setResizable(false);
+            table_all_users.getColumnModel().getColumn(2).setResizable(false);
         }
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
