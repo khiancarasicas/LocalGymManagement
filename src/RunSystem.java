@@ -3,9 +3,12 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.HashMap;
 import javax.swing.JOptionPane;
 
 public class RunSystem {
+    public static boolean databaseConnected;
+    
     public Connection cn;
     public Statement st;
     public PreparedStatement pst;
@@ -21,7 +24,7 @@ public class RunSystem {
     }
     
     public static void main(String[] args) {
-        RunSystem run = new RunSystem();
+        new RunSystem();
     }
     
     public void ConnectToDatabase() {
@@ -31,8 +34,12 @@ public class RunSystem {
             st = cn.createStatement();
             
             JOptionPane.showMessageDialog(null, "Successfully connected to database.");
+            databaseConnected = true;
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error connecting to database.\nPlease connect to the database first to avoid any errors from occurring.");
+            JOptionPane.showMessageDialog(null, "Offline mode turned on.\nData save will be temporary.");
+            new OfflineData();
+            databaseConnected = false;
         }
     }
 }

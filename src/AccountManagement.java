@@ -7,9 +7,12 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import java.util.*;
 
 public class AccountManagement extends javax.swing.JFrame {
     public static int id;
+    
+    boolean databaseConnected = RunSystem.databaseConnected;
     
     public Connection cn;
     public Statement st;
@@ -19,26 +22,214 @@ public class AccountManagement extends javax.swing.JFrame {
     
     public AccountManagement() {
         initComponents();
-        ConnectToDatabase();
+        if(databaseConnected) {
+            ConnectToDatabase();
+        } else {
+            ConnectToOffline();
+        }
     }
     
-    public void setUserID(String username, String password) {
+    public void ConnectToOffline() {
         
-        try {
-            pst = cn.prepareStatement("SELECT * FROM users");
-            rs = pst.executeQuery();
-            
-            while(rs.next()) {
-                String name = rs.getString("username");
-                String pwd = rs.getString("password");
+    }
+    
+    public void loginUser_temporary(String user, String pass) {
+        boolean userExist = false;
+        
+        if(!(user.isEmpty() || pass.isEmpty())) {
+            for(int i = 0; i < OfflineData.allUser.size(); i++) {
+                String name = OfflineData.allUser.get(i).get("username");
+                String pwd = OfflineData.allUser.get(i).get("password");
+                String prog = OfflineData.allUser.get(i).get("program");
                 
-                if (username.equals(name) && password.equals(pwd)) {
-                    id = Integer.valueOf(rs.getString("id"));
+                if(user.equals(name) && pass.equals(pwd)) {
+                    setUserID(name, pwd);
+                    userExist = true;
+                    
+                    if(prog.equals("admin")) {
+                        AdminPanel admin = new AdminPanel();
+                        admin.pack();
+                        admin.setLocationRelativeTo(null);
+                        admin.setVisible(true);
+                    } else {
+                        
+                    }
+                    dispose();
+                    break;
+                } else if(user.equals(name) && !pass.equals(pwd)) {
+                    userExist = true;
+                    JOptionPane.showMessageDialog(null, "The password you entered is incorrect.");
                     break;
                 }
             }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error saving ID.");
+            
+            if(!userExist) {
+                JOptionPane.showMessageDialog(null, "Account not registered.");
+            }
+            
+        } else {
+            JOptionPane.showMessageDialog(null, "The username and password cannot be left empty.");
+        }
+    }
+    
+    public void registerUser_temporary(String user, String pass, String prog) {
+        boolean userExist = false;
+        
+        if(!(user.isEmpty() || pass.isEmpty())) {
+            for(int i = 0; i < OfflineData.allUser.size(); i++) {
+                String name = OfflineData.allUser.get(i).get("username");
+                String pwd = OfflineData.allUser.get(i).get("password");
+                
+                if(user.equals(name)) {
+                    userExist = true;
+                }
+            }
+            
+            if(userExist) {
+                JOptionPane.showMessageDialog(null, "Username already registered.");
+            } else {
+                int newID = 1;
+                
+                for(int i = 0; i < OfflineData.allUser.size(); i++) {
+                    newID++;
+                    if(newID == Integer.valueOf(OfflineData.allUser.get(i).get("id"))) {
+                        newID++;
+                    }
+                }
+                
+                OfflineData offline = new OfflineData();
+                offline.newUser = new HashMap<>();
+                offline.newUser.put("id", Integer.toString(newID));
+                offline.newUser.put("username", user);
+                offline.newUser.put("password", pass);
+                offline.newUser.put("program", prog);
+                offline.allUser.add(offline.newUser);
+                
+                JOptionPane.showMessageDialog(null, "Account successfully registered.");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "The username and password cannot be left empty.");
+        }
+    }
+    
+    public void loginUser_database(String user, String pass) {
+        boolean userExist = false;
+        
+        if(!(user.isEmpty() || pass.isEmpty())) {
+            try {
+                pst = cn.prepareStatement("SELECT * FROM users");
+                rs = pst.executeQuery();
+                
+                while(rs.next()) {
+                    String name = rs.getString("username");
+                    String pwd = rs.getString("password");
+                    String prog = rs.getString("program");
+                    
+                    if(user.equals(name) && pass.equals(pwd)) {
+                        setUserID(name, pwd);
+                        userExist = true;
+                        
+                        if(prog.equals("admin")) {
+                            AdminPanel admin = new AdminPanel();
+                            admin.pack();
+                            admin.setLocationRelativeTo(null);
+                            admin.setVisible(true);
+                        } else {
+                            
+                        }
+                        dispose();
+                        break;
+                    }else if(user.equals(name) && !pass.equals(pwd)) {
+                        userExist = true;
+                        JOptionPane.showMessageDialog(null, "The password you entered is incorrect.");
+                        break;
+                    }
+                }
+                
+                if(!userExist) {
+                    JOptionPane.showMessageDialog(null, "Account not registered.");
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(AccountManagement.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "The username and password cannot be left empty.");
+        }
+    }
+    
+    public void registerUser_database(String user, String pass, String prog) {
+        boolean userExist = false;
+        
+        if(!(user.isEmpty() || pass.isEmpty())){
+            try {
+                pst = cn.prepareStatement("SELECT * FROM users");
+                rs = pst.executeQuery();
+                
+                while(rs.next()) {
+                    String name = rs.getString("username");
+                    String pwd = rs.getString("password");
+                    
+                    if(user.equals(name)) {
+                        userExist = true;
+                    }
+                }
+                
+                if(userExist) {
+                    JOptionPane.showMessageDialog(null, "Username already registered.");
+                } else {
+                    try {
+                        pst = cn.prepareStatement("INSERT INTO users (username,password,program)VALUES(?,?,?)");
+                        pst.setString(1, user);
+                        pst.setString(2, pass);
+                        pst.setString(3, prog);
+                        
+                        int ex = pst.executeUpdate();
+                        if(ex == 1) {
+                            JOptionPane.showMessageDialog(null, "Account successfully registered.");
+                            dispose();
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Account failed to register.");
+                        }
+                    } catch (SQLException ex) {
+                        Logger.getLogger(AccountManagement.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(AccountManagement.class.getName()).log(Level.SEVERE, null, ex);
+            }   
+        } else {
+            JOptionPane.showMessageDialog(null, "The username and password cannot be left empty.");
+        }
+    }
+    
+    public void setUserID(String username, String password) {
+        if(databaseConnected) {
+            try {
+                pst = cn.prepareStatement("SELECT * FROM users");
+                rs = pst.executeQuery();
+
+                while(rs.next()) {
+                    String name = rs.getString("username");
+                    String pwd = rs.getString("password");
+
+                    if (username.equals(name) && password.equals(pwd)) {
+                        id = Integer.valueOf(rs.getString("id"));
+                        break;
+                    }
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Error saving ID.");
+            }
+        } else {
+            for(int i = 0; i < OfflineData.allUser.size(); i++) {
+                String name = OfflineData.allUser.get(i).get("username");
+                String pwd = OfflineData.allUser.get(i).get("password");
+                
+                if (username.equals(name) && password.equals(pwd)) {
+                    id = Integer.valueOf(OfflineData.allUser.get(i).get("id"));
+                    break;
+                }
+            }
         }
     }
     
@@ -49,6 +240,8 @@ public class AccountManagement extends javax.swing.JFrame {
             st = cn.createStatement();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error connecting to database.\nPlease connect to the database first to avoid any errors from occurring.");
+            new RunSystem();
+            dispose();
         }
     }
     
@@ -195,90 +388,22 @@ public class AccountManagement extends javax.swing.JFrame {
         String user = edttxt_username.getText();
         String pass = new String(edttxt_password.getPassword());
         
-        if(!(user.isEmpty() || pass.isEmpty())) {
-            try {
-                pst = cn.prepareStatement("SELECT * FROM users");
-                rs = pst.executeQuery();
-                
-                while(rs.next()) {
-                    String name = rs.getString("username");
-                    String pwd = rs.getString("password");
-                    String sub = rs.getString("subscription");
-                    
-                    if(user.equals(name) && pass.equals(pwd)) {
-                        setUserID(name, pwd);
-                        if(sub.equals("admin")) {
-                            AdminPanel admin = new AdminPanel();
-                            admin.pack();
-                            admin.setLocationRelativeTo(null);
-                            admin.setVisible(true);
-                        } else {
-                            
-                        }
-                        dispose();
-                        break;
-                    }else if(user.equals(name) && !pass.equals(pwd)) {
-                        if(!user.equals(name)) {
-                            JOptionPane.showMessageDialog(null, "Account not registered.");
-                        } else {
-                            JOptionPane.showMessageDialog(null, "The password you entered is incorrect.");
-                        }
-                        break;
-                    }
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(AccountManagement.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        if(databaseConnected) {
+            loginUser_database(user, pass);
         } else {
-            JOptionPane.showMessageDialog(null, "The username and password cannot be left empty.");
+            loginUser_temporary(user, pass);
         }
     }//GEN-LAST:event_btn_loginActionPerformed
 
     private void btn_registerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_registerActionPerformed
         String user = edttxt_username.getText();
         String pass = new String(edttxt_password.getPassword());
-        String sub = "No subscription";
-        boolean userExist = false;
+        String prog = "Not enrolled";
         
-        if(!(user.isEmpty() || pass.isEmpty())){
-            try {
-                pst = cn.prepareStatement("SELECT * FROM users");
-                rs = pst.executeQuery();
-                
-                while(rs.next()) {
-                    String name = rs.getString("username");
-                    String pwd = rs.getString("password");
-                    
-                    if(user.equals(name)) {
-                        userExist = true;
-                    }
-                }
-                
-                if(userExist) {
-                    JOptionPane.showMessageDialog(null, "Username already registered.");
-                } else {
-                    try {
-                        pst = cn.prepareStatement("INSERT INTO users (username,password,subscription)VALUES(?,?,?)");
-                        pst.setString(1, user);
-                        pst.setString(2, pass);
-                        pst.setString(3, sub);
-                        
-                        int ex = pst.executeUpdate();
-                        if(ex == 1) {
-                            JOptionPane.showMessageDialog(null, "Account successfully registered.");
-                            dispose();
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Account failed to register.");
-                        }
-                    } catch (SQLException ex) {
-                        Logger.getLogger(AccountManagement.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(AccountManagement.class.getName()).log(Level.SEVERE, null, ex);
-            }   
+        if(databaseConnected) {
+            registerUser_database(user, pass, prog);
         } else {
-            JOptionPane.showMessageDialog(null, "The username and password cannot be left empty.");
+            registerUser_temporary(user, pass, prog);
         }
     }//GEN-LAST:event_btn_registerActionPerformed
     
