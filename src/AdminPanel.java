@@ -13,15 +13,16 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class AdminPanel extends javax.swing.JFrame {
-    boolean databaseConnected = RunSystem.databaseConnected;
+    private boolean databaseConnected = RunSystem.databaseConnected;
     
-    public Connection cn;
-    public Statement st;
-    public PreparedStatement pst;
-    public ResultSet rs;
+    private Connection cn;
+    private Statement st;
+    private PreparedStatement pst;
+    private ResultSet rs;
     
     
     public AdminPanel() {
+        
         initComponents();
         
         if(databaseConnected) {
@@ -32,11 +33,9 @@ public class AdminPanel extends javax.swing.JFrame {
             LoadUserData_offline();
             LoadPrograms_offline();
         }
-        
-        jLabel1.setText("ADMIN : ID - " + AccountManagement.id);
     }
     
-    public void LoadUserData_offline() {
+    private void LoadUserData_offline() {
         username_search.removeAllItems();
         
         for(int i = 0; i < OfflineData.allUser.size(); i++) {
@@ -46,7 +45,7 @@ public class AdminPanel extends javax.swing.JFrame {
         DisplayAllUsers_offline();
     }
     
-    public void DisplayAllUsers_offline() {
+    private void DisplayAllUsers_offline() {
         DefaultTableModel df = (DefaultTableModel) table_all_users.getModel();
         df.setRowCount(0);
         
@@ -59,7 +58,7 @@ public class AdminPanel extends javax.swing.JFrame {
         }
     }
     
-    public void LoadPrograms_offline() {
+    private void LoadPrograms_offline() {
         program_search.removeAllItems();
         
         for(int i = 0; i < OfflineData.allPrograms.size(); i++) {
@@ -69,7 +68,7 @@ public class AdminPanel extends javax.swing.JFrame {
         DisplayAllPrograms_offline();
     }
     
-    public void DisplayAllPrograms_offline() {
+    private void DisplayAllPrograms_offline() {
         DefaultTableModel df = (DefaultTableModel) table_all_programs.getModel();
         df.setRowCount(0);
         
@@ -83,7 +82,7 @@ public class AdminPanel extends javax.swing.JFrame {
         }
     }
     
-    public void findUser_offline() {
+    private void findUser_offline() {
         String username = username_search.getSelectedItem().toString();
         for(int i = 0; i < OfflineData.allUser.size(); i++) {
             if (OfflineData.allUser.get(i).get("username").equals(username)) {
@@ -92,7 +91,7 @@ public class AdminPanel extends javax.swing.JFrame {
         }
     }
     
-    public void updateUser_offline() {
+    private void updateUser_offline() {
         String prog = edttxt_user_program.getText();
         String username = username_search.getSelectedItem().toString();
         
@@ -115,7 +114,7 @@ public class AdminPanel extends javax.swing.JFrame {
         }
     }
     
-    public void deleteUser_offline() {
+    private void deleteUser_offline() {
         String username = username_search.getSelectedItem().toString();
         
         if(!username_search.getSelectedItem().toString().equals("admin")) {
@@ -132,7 +131,7 @@ public class AdminPanel extends javax.swing.JFrame {
         }
     }
     
-    public void findProgram_offline() {
+    private void findProgram_offline() {
         try {
         String id = program_search.getSelectedItem().toString();
         for(int i = 0; i < OfflineData.allPrograms.size(); i++) {
@@ -147,7 +146,7 @@ public class AdminPanel extends javax.swing.JFrame {
         }
     }
     
-    public void addProgram_offline() {
+    private void addProgram_offline() {
         String title = edttxt_prog_title.getText();
         String details = edttxt_prog_details.getText();
         String price = edttxt_prog_price.getText();
@@ -175,7 +174,7 @@ public class AdminPanel extends javax.swing.JFrame {
         LoadPrograms_offline();
     }
     
-    public void updateProgram_offline() {
+    private void updateProgram_offline() {
         try {
             String title = edttxt_prog_title.getText();
             String details = edttxt_prog_details.getText();
@@ -204,7 +203,7 @@ public class AdminPanel extends javax.swing.JFrame {
         }
     }
     
-    public void deleteProgram_offline() {
+    private void deleteProgram_offline() {
         try {
             String id = program_search.getSelectedItem().toString();
             for(int i = 0; i < OfflineData.allPrograms.size(); i++) {
@@ -220,7 +219,7 @@ public class AdminPanel extends javax.swing.JFrame {
         }
     }
     
-    public void ConnectToDatabase() {
+    private void ConnectToDatabase() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             cn = DriverManager.getConnection("jdbc:mysql://localhost/localgym", "root", "");
@@ -232,7 +231,7 @@ public class AdminPanel extends javax.swing.JFrame {
         }
     }
     
-    public void LoadPrograms_database() {
+    private void LoadPrograms_database() {
         program_search.removeAllItems();
         try {
             pst = cn.prepareStatement("SELECT id FROM programs");
@@ -247,7 +246,7 @@ public class AdminPanel extends javax.swing.JFrame {
         DisplayAllPrograms_database();
     }
     
-    public void DisplayAllPrograms_database() {
+    private void DisplayAllPrograms_database() {
         int size;
         DefaultTableModel df = (DefaultTableModel) table_all_programs.getModel();
         df.setRowCount(0);
@@ -274,7 +273,7 @@ public class AdminPanel extends javax.swing.JFrame {
         }
     }
     
-    public void LoadUserData_database() {
+    private void LoadUserData_database() {
         username_search.removeAllItems();
         try {
             pst = cn.prepareStatement("SELECT username FROM users");
@@ -289,7 +288,7 @@ public class AdminPanel extends javax.swing.JFrame {
         DisplayAllUsers_database();
     }
     
-    public void DisplayAllUsers_database() {
+    private void DisplayAllUsers_database() {
         int size;
         DefaultTableModel df = (DefaultTableModel) table_all_users.getModel();
         df.setRowCount(0);
@@ -315,7 +314,7 @@ public class AdminPanel extends javax.swing.JFrame {
         }
     }
     
-    public void findUser_database() {
+    private void findUser_database() {
         try {
             String username = username_search.getSelectedItem().toString();
             pst = cn.prepareStatement("SELECT * FROM users WHERE username=?");
@@ -333,7 +332,7 @@ public class AdminPanel extends javax.swing.JFrame {
         }
     }
     
-    public void updateUser_database() {
+    private void updateUser_database() {
         String prog = edttxt_user_program.getText();
         String username = username_search.getSelectedItem().toString();
         
@@ -359,7 +358,7 @@ public class AdminPanel extends javax.swing.JFrame {
         }
     }
     
-    public void deleteUser_database() {
+    private void deleteUser_database() {
         String username = username_search.getSelectedItem().toString();
         
         if(!username_search.getSelectedItem().toString().equals("admin")) {
@@ -383,7 +382,7 @@ public class AdminPanel extends javax.swing.JFrame {
         }
     }
     
-    public void findProgram_database() {
+    private void findProgram_database() {
         try {
             String user_id = program_search.getSelectedItem().toString();
             pst = cn.prepareStatement("SELECT * FROM programs WHERE id=?");
@@ -403,7 +402,7 @@ public class AdminPanel extends javax.swing.JFrame {
         }
     }
     
-    public void addProgram_database() {
+    private void addProgram_database() {
         String title = edttxt_prog_title.getText();
         String details = edttxt_prog_details.getText();
         String price = edttxt_prog_price.getText();
@@ -429,7 +428,7 @@ public class AdminPanel extends javax.swing.JFrame {
         }
     }
     
-    public void updateProgram_database() {
+    private void updateProgram_database() {
         String title = edttxt_prog_title.getText();
         String details = edttxt_prog_details.getText();
         String price = edttxt_prog_price.getText();
@@ -457,7 +456,7 @@ public class AdminPanel extends javax.swing.JFrame {
         }
     }
     
-    public void deleteProgram_database() {
+    private void deleteProgram_database() {
         String id = program_search.getSelectedItem().toString();
         
         try {
@@ -486,7 +485,7 @@ public class AdminPanel extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btn_signout = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -514,6 +513,7 @@ public class AdminPanel extends javax.swing.JFrame {
         table_all_programs = new javax.swing.JTable();
         jLabel9 = new javax.swing.JLabel();
         btn_findProgram = new javax.swing.JButton();
+        jPanel4 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -521,12 +521,12 @@ public class AdminPanel extends javax.swing.JFrame {
         jPanel1.setPreferredSize(new java.awt.Dimension(700, 450));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel1.setText("Admin");
+        jLabel1.setText("Admin Panel");
 
-        jButton1.setText("SIGN OUT");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btn_signout.setText("SIGN OUT");
+        btn_signout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btn_signoutActionPerformed(evt);
             }
         });
 
@@ -600,7 +600,7 @@ public class AdminPanel extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel4)
-                        .addContainerGap(218, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
@@ -613,7 +613,7 @@ public class AdminPanel extends javax.swing.JFrame {
                                 .addComponent(btn_updateUser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btn_deleteUser))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 412, Short.MAX_VALUE)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel5)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -639,7 +639,7 @@ public class AdminPanel extends javax.swing.JFrame {
                     .addComponent(btn_updateUser)
                     .addComponent(btn_deleteUser))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
         );
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -721,34 +721,35 @@ public class AdminPanel extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(30, 30, 30)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(jLabel2)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(edttxt_prog_price))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(edttxt_prog_details, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel2)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(edttxt_prog_title))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(btn_addProgram)
+                        .addComponent(btn_addProgram, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btn_updateProgram, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btn_deleteProgram))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btn_deleteProgram, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(program_search, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btn_findProgram, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(31, Short.MAX_VALUE))
+                        .addComponent(btn_findProgram, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel7))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(edttxt_prog_details)
+                            .addComponent(edttxt_prog_price)))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(edttxt_prog_title))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 494, Short.MAX_VALUE)))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -778,7 +779,20 @@ public class AdminPanel extends javax.swing.JFrame {
                     .addComponent(btn_updateProgram)
                     .addComponent(btn_addProgram))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 252, Short.MAX_VALUE))
+        );
+
+        jPanel4.setBackground(new java.awt.Color(86, 86, 86));
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 10, Short.MAX_VALUE)
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -786,52 +800,54 @@ public class AdminPanel extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(29, 29, 29)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1)
-                    .addComponent(jLabel1))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(29, 29, 29)
+                        .addComponent(jLabel1))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(33, 33, 33)
+                        .addComponent(btn_signout)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(17, 17, 17)
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
-                .addGap(57, 57, 57))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(btn_signout)
+                .addGap(42, 42, 42))
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1018, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 550, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btn_signoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_signoutActionPerformed
         new RunSystem();
         dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btn_signoutActionPerformed
 
     private void btn_updateUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_updateUserActionPerformed
         if(databaseConnected) {
@@ -895,13 +911,13 @@ public class AdminPanel extends javax.swing.JFrame {
     private javax.swing.JButton btn_deleteUser;
     private javax.swing.JButton btn_findProgram;
     private javax.swing.JButton btn_findUser;
+    private javax.swing.JButton btn_signout;
     private javax.swing.JButton btn_updateProgram;
     private javax.swing.JButton btn_updateUser;
     private javax.swing.JTextField edttxt_prog_details;
     private javax.swing.JTextField edttxt_prog_price;
     private javax.swing.JTextField edttxt_prog_title;
     private javax.swing.JTextField edttxt_user_program;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -914,6 +930,7 @@ public class AdminPanel extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JComboBox<String> program_search;

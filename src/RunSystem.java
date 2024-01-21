@@ -1,3 +1,4 @@
+import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -5,14 +6,15 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.HashMap;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 public class RunSystem {
     public static boolean databaseConnected;
     
-    public Connection cn;
-    public Statement st;
-    public PreparedStatement pst;
-    public ResultSet rs;
+    private Connection cn;
+    private Statement st;
+    private PreparedStatement pst;
+    private ResultSet rs;
     
     
     public RunSystem() {
@@ -24,10 +26,16 @@ public class RunSystem {
     }
     
     public static void main(String[] args) {
+        try {
+            UIManager.setLookAndFeel( new FlatMacDarkLaf());
+        } catch(Exception e) {
+            
+        }
+        
         new RunSystem();
     }
     
-    public void ConnectToDatabase() {
+    private void ConnectToDatabase() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             cn = DriverManager.getConnection("jdbc:mysql://localhost/localgym", "root", "");
