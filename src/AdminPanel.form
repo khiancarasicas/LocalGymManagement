@@ -108,30 +108,28 @@
                       <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" attributes="0">
-                                      <Component id="btn_updateUser" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="btn_deleteUser" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace pref="218" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
                               <Group type="103" groupAlignment="1" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="username_search" max="32767" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="btn_findUser" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" attributes="0">
+                                      <Component id="btn_updateUser" max="32767" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="btn_deleteUser" min="-2" max="-2" attributes="0"/>
+                                  </Group>
                                   <Component id="jScrollPane1" alignment="0" pref="0" max="32767" attributes="0"/>
                                   <Group type="102" attributes="0">
                                       <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="edttxt_user_program" max="32767" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" attributes="0">
-                                      <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="username_search" pref="144" max="32767" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="btn_findUser" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
@@ -162,7 +160,7 @@
                           <Component id="btn_deleteUser" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="jScrollPane1" pref="0" max="32767" attributes="0"/>
+                      <Component id="jScrollPane1" pref="151" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -198,14 +196,6 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Program:"/>
               </Properties>
-            </Component>
-            <Component class="javax.swing.JButton" name="btn_findUser">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Search"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_findUserActionPerformed"/>
-              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btn_deleteUser">
               <Properties>
@@ -259,6 +249,14 @@
             </Container>
             <Component class="javax.swing.JTextField" name="edttxt_user_program">
             </Component>
+            <Component class="javax.swing.JButton" name="btn_findUser">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Search"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_findUserActionPerformed"/>
+              </Events>
+            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="jPanel3">
@@ -289,16 +287,16 @@
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="btn_addProgram" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="btn_updateProgram" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="btn_updateProgram" max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
                               <Component id="btn_deleteProgram" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="program_search" min="-2" max="-2" attributes="0"/>
+                              <Component id="program_search" max="32767" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="btn_findProgram" max="32767" attributes="0"/>
+                              <Component id="btn_findProgram" min="-2" pref="160" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace pref="31" max="32767" attributes="0"/>
@@ -328,8 +326,8 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="program_search" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="btn_findProgram" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel9" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="btn_findProgram" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -377,14 +375,6 @@
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
               </AuxValues>
-            </Component>
-            <Component class="javax.swing.JButton" name="btn_findProgram">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Search"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_findProgramActionPerformed"/>
-              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btn_deleteProgram">
               <Properties>
@@ -462,6 +452,14 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="ID:"/>
               </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="btn_findProgram">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Search"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_findProgramActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

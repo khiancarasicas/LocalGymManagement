@@ -21,9 +21,9 @@ public class OfflineData {
             // SAMPLE PROGRAM (DEFAULT)
             newProgram = new HashMap<>();
             newProgram.put("id", "1");
-            newProgram.put("title", "TEST 1");
-            newProgram.put("details", "this is for details");
-            newProgram.put("price", "999");
+            newProgram.put("title", "14 Days Plan");
+            newProgram.put("details", "Achieve Your Fitness Goals in 14 Days – Join Now.");
+            newProgram.put("price", "699");
             allPrograms.add(newProgram);
         }
     }

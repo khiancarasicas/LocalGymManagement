@@ -60,7 +60,7 @@ public class AdminPanel extends javax.swing.JFrame {
     }
     
     public void LoadPrograms_offline() {
-         program_search.removeAllItems();
+        program_search.removeAllItems();
         
         for(int i = 0; i < OfflineData.allPrograms.size(); i++) {
             program_search.addItem(OfflineData.allPrograms.get(i).get("id"));
@@ -133,6 +133,7 @@ public class AdminPanel extends javax.swing.JFrame {
     }
     
     public void findProgram_offline() {
+        try {
         String id = program_search.getSelectedItem().toString();
         for(int i = 0; i < OfflineData.allPrograms.size(); i++) {
             if (OfflineData.allPrograms.get(i).get("id").equals(id)) {
@@ -140,6 +141,9 @@ public class AdminPanel extends javax.swing.JFrame {
                 edttxt_prog_details.setText(OfflineData.allPrograms.get(i).get("details"));
                 edttxt_prog_price.setText(OfflineData.allPrograms.get(i).get("price"));
             }
+        }
+        } catch(Exception e) {
+            JOptionPane.showMessageDialog(null, "No record found.");
         }
     }
     
@@ -489,11 +493,11 @@ public class AdminPanel extends javax.swing.JFrame {
         username_search = new javax.swing.JComboBox<>();
         btn_updateUser = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
-        btn_findUser = new javax.swing.JButton();
         btn_deleteUser = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         table_all_users = new javax.swing.JTable();
         edttxt_user_program = new javax.swing.JTextField();
+        btn_findUser = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -503,13 +507,13 @@ public class AdminPanel extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         edttxt_prog_price = new javax.swing.JTextField();
         program_search = new javax.swing.JComboBox<>();
-        btn_findProgram = new javax.swing.JButton();
         btn_deleteProgram = new javax.swing.JButton();
         btn_updateProgram = new javax.swing.JButton();
         btn_addProgram = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         table_all_programs = new javax.swing.JTable();
         jLabel9 = new javax.swing.JLabel();
+        btn_findProgram = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -539,13 +543,6 @@ public class AdminPanel extends javax.swing.JFrame {
         });
 
         jLabel5.setText("Program:");
-
-        btn_findUser.setText("Search");
-        btn_findUser.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_findUserActionPerformed(evt);
-            }
-        });
 
         btn_deleteUser.setText("Delete");
         btn_deleteUser.addActionListener(new java.awt.event.ActionListener() {
@@ -587,6 +584,13 @@ public class AdminPanel extends javax.swing.JFrame {
             table_all_users.getColumnModel().getColumn(2).setResizable(false);
         }
 
+        btn_findUser.setText("Search");
+        btn_findUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_findUserActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -595,26 +599,25 @@ public class AdminPanel extends javax.swing.JFrame {
                 .addGap(29, 29, 29)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(btn_updateUser)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btn_deleteUser))
-                            .addComponent(jLabel4))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jLabel4)
+                        .addContainerGap(218, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(username_search, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btn_findUser))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(btn_updateUser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btn_deleteUser))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel5)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(edttxt_user_program))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(username_search, 0, 144, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btn_findUser)))
+                                .addComponent(edttxt_user_program)))
                         .addGap(25, 25, 25))))
         );
         jPanel2Layout.setVerticalGroup(
@@ -636,7 +639,7 @@ public class AdminPanel extends javax.swing.JFrame {
                     .addComponent(btn_updateUser)
                     .addComponent(btn_deleteUser))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE))
         );
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -647,13 +650,6 @@ public class AdminPanel extends javax.swing.JFrame {
         jLabel7.setText("Details:");
 
         jLabel8.setText("Price:");
-
-        btn_findProgram.setText("Search");
-        btn_findProgram.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_findProgramActionPerformed(evt);
-            }
-        });
 
         btn_deleteProgram.setText("Delete");
         btn_deleteProgram.addActionListener(new java.awt.event.ActionListener() {
@@ -712,6 +708,13 @@ public class AdminPanel extends javax.swing.JFrame {
 
         jLabel9.setText("ID:");
 
+        btn_findProgram.setText("Search");
+        btn_findProgram.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_findProgramActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -736,15 +739,15 @@ public class AdminPanel extends javax.swing.JFrame {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(btn_addProgram)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btn_updateProgram)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btn_updateProgram, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btn_deleteProgram))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(program_search, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(program_search, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btn_findProgram, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(btn_findProgram, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(31, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -767,8 +770,8 @@ public class AdminPanel extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(program_search, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_findProgram)
-                    .addComponent(jLabel9))
+                    .addComponent(jLabel9)
+                    .addComponent(btn_findProgram))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_deleteProgram)
@@ -838,14 +841,6 @@ public class AdminPanel extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btn_updateUserActionPerformed
 
-    private void btn_findUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_findUserActionPerformed
-        if(databaseConnected) {
-            findUser_database();
-        } else {
-            findUser_offline();
-        }
-    }//GEN-LAST:event_btn_findUserActionPerformed
-
     private void btn_deleteUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteUserActionPerformed
         if(databaseConnected) {
             deleteUser_database();
@@ -853,14 +848,6 @@ public class AdminPanel extends javax.swing.JFrame {
             deleteUser_offline();
         }
     }//GEN-LAST:event_btn_deleteUserActionPerformed
-
-    private void btn_findProgramActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_findProgramActionPerformed
-        if(databaseConnected) {
-            findProgram_database();
-        } else {
-            findProgram_offline();
-        }
-    }//GEN-LAST:event_btn_findProgramActionPerformed
 
     private void btn_deleteProgramActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteProgramActionPerformed
         if(databaseConnected) {
@@ -885,6 +872,22 @@ public class AdminPanel extends javax.swing.JFrame {
             addProgram_offline();
         }
     }//GEN-LAST:event_btn_addProgramActionPerformed
+
+    private void btn_findUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_findUserActionPerformed
+        if(databaseConnected) {
+            findUser_database();
+        } else {
+            findUser_offline();
+        }
+    }//GEN-LAST:event_btn_findUserActionPerformed
+
+    private void btn_findProgramActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_findProgramActionPerformed
+        if(databaseConnected) {
+            findProgram_database();
+        } else {
+            findProgram_offline();
+        }
+    }//GEN-LAST:event_btn_findProgramActionPerformed
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_addProgram;
