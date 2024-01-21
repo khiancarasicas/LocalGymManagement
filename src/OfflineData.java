@@ -17,7 +17,7 @@ public class OfflineData {
             newUser.put("password", "password");
             newUser.put("program", "admin");
             allUser.add(newUser);
-
+            
             // SAMPLE PROGRAM (DEFAULT)
             newProgram = new HashMap<>();
             newProgram.put("id", "1");
