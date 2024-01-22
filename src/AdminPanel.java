@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -22,9 +23,8 @@ public class AdminPanel extends javax.swing.JFrame {
     
     
     public AdminPanel() {
-        
         initComponents();
-        
+        frameDesign("Gym or Gin - Admin");
         if(databaseConnected) {
             ConnectToDatabase();
             LoadUserData_database();
@@ -33,6 +33,12 @@ public class AdminPanel extends javax.swing.JFrame {
             LoadUserData_offline();
             LoadPrograms_offline();
         }
+    }
+    
+    private void frameDesign(String title) {
+        setTitle(title);
+        ImageIcon icon = new ImageIcon(getClass().getResource("/icons/Gym_Logo.png"));
+        setIconImage(icon.getImage());
     }
     
     private void LoadUserData_offline() {

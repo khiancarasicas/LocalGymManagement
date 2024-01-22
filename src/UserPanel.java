@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 public class UserPanel extends javax.swing.JFrame {
@@ -21,6 +22,7 @@ public class UserPanel extends javax.swing.JFrame {
     
     public UserPanel() {
         initComponents();
+        frameDesign("Gym or Gin - User");
         if(databaseConnected) {
             ConnectToDatabase();
             loadUserData_database();
@@ -29,6 +31,12 @@ public class UserPanel extends javax.swing.JFrame {
             loadUserData_offline();
             LoadPrograms_offline();
         }
+    }
+    
+    private void frameDesign(String title) {
+        setTitle(title);
+        ImageIcon icon = new ImageIcon(getClass().getResource("/icons/Gym_Logo.png"));
+        setIconImage(icon.getImage());
     }
     
     private void loadUserData_offline() {

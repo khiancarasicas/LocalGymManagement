@@ -25,10 +25,17 @@ public class AccountManagement extends javax.swing.JFrame {
     
     public AccountManagement() {
         initComponents();
+        frameDesign("");
         fixImage();
         if(databaseConnected) {
             ConnectToDatabase();
         }
+    }
+    
+    private void frameDesign(String title) {
+        setTitle(title);
+        ImageIcon icon = new ImageIcon(getClass().getResource("/icons/Gym_Logo.png"));
+        setIconImage(icon.getImage());
     }
     
     private void fixImage() {
