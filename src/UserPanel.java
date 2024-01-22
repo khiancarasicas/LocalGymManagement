@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public class UserPanel extends javax.swing.JFrame {
-    boolean databaseConnected = RunSystem.databaseConnected;
+    boolean databaseConnected = RunSystem.databaseConnected, loaded = false;
     
     private final int userID = AccountManagement.id;
     
@@ -95,7 +95,12 @@ public class UserPanel extends javax.swing.JFrame {
             while(rs.next()) {
                 program_search.addItem(rs.getString(1));
             }
-            
+            loaded = true;
+            if(databaseConnected) {
+                findProgram_database();
+            } else {
+                findProgram_offline();
+            }
         } catch (SQLException ex) {
             Logger.getLogger(AdminPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -453,10 +458,12 @@ public class UserPanel extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_enrollActionPerformed
 
     private void program_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_program_searchActionPerformed
-        if(databaseConnected) {
-            findProgram_database();
-        } else {
-            findProgram_offline();
+        if(loaded) {
+            if(databaseConnected) {
+                findProgram_database();
+            } else {
+                findProgram_offline();
+            }
         }
     }//GEN-LAST:event_program_searchActionPerformed
 
